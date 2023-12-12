@@ -404,13 +404,13 @@ class Application(object):
             # wsgi (just usable ones enabled)
             # "wsgi.input",
             # "wsgi.file_wrapper",
-            "wsgi.version",
+            # "wsgi.version",
             # "wsgi.errors",
             # "wsgi.run_once",
             # "wsgi.multithread",
             # "wsgi.multiprocess",
-            "wsgi.url_scheme",
-            "uwsgi.version",
+            # "wsgi.url_scheme",
+            # "uwsgi.version",
             # "uwsgi.core",
             # "uwsgi.node"
 
