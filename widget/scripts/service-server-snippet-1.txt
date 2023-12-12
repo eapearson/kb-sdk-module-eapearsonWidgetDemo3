@@ -4,8 +4,13 @@
         #
         path = environ['PATH_INFO']
         if path.startswith('/widgets'):
-            status, response_headers, content = widget_handler('${service_module_name}', environ, config)
-            start_response(status, response_headers)
-            return [content]
+            widget_support = get_global_widget_support()
+            if widget_support is not None:
+                status, response_headers, content = widget_support.handle_widget(environ)
+                start_response(status, response_headers)
+                return [content]
+            else:
+                raise Exception('Widget support not yet available for /widgets!')
         #
         # END DS-SERVICE-WIDGET-PATH-HANDLER
+

@@ -7,10 +7,7 @@ from installed_clients.KBaseReportClient import KBaseReport
 # BEGIN DS-SERVICE-WIDGET-IMPORT
 # Injected by the Dynamic Service Widget Tool
 #
-from widget.handlers.assets import Assets
-from widget.handlers.python_widget import PythonWidget
-from widget.handlers.static_widget import StaticWidget
-from widget.widget_handler import add_widget
+from widget.widget_handler import WidgetSupport, set_global_widget_support
 
 #
 # END DS-SERVICE-WIDGET-IMPORT
@@ -50,56 +47,19 @@ class eapearsonWidgetDemo3:
         # BEGIN DS-SERVICE-WIDGET-ADD-WIDGETS
         # Injected by the Dynamic Service Widget Tool
         #
-        module_name = __name__.split('.')[:1][0]
+        widget_support = WidgetSupport(config, self.GIT_COMMIT_HASH)
+        set_global_widget_support(widget_support)
 
-        add_widget('assets', Assets(
-            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
-            name = 'Assets',  # Just for logging and feedback
-            path = 'assets',  # path within the widgets directory, currently widget/widgets
-            config = config  # widgets often need to access configuration
-        ))
-        
-        add_widget('first', StaticWidget(
-            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
-            name = 'First',  # Just for logging and feedback
-            path = 'first',  # path within the widgets directory, currently widget/widgets
-            config = config  # widgets often need to access configuration
-        ))
 
-        add_widget('media_viewer', StaticWidget(
-            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
-            name = 'Media Viewer (Javascript version)',  # Just for logging and feedback
-            path = 'media_viewer',  # path within the widgets directory, currently widget/widgets
-            config = config  # widgets often need to access configuration
-        ))
+        # Add handlers for all widgets
+        widget_support.add_assets_widget('assets')
+        widget_support.add_static_widget('first')
+        widget_support.add_static_widget('media_viewer')
+        widget_support.add_python_widget('media_viewer_py', module="media_viewer", title="Media Viewer")
+        widget_support.add_python_widget('devtool')
+        widget_support.add_python_widget('demos')
+        widget_support.add_python_widget('config')
 
-        add_widget('media_viewer_py', PythonWidget(
-            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
-            name = 'Media Viewer (Python version)',  # Just for logging and feedback
-            widget_module_name = 'media_viewer',  # path within the python widgets directory, currently widget/widgets
-            config = config  # widgets often need to access configuration
-        ))
-
-        add_widget('devtool', PythonWidget(
-            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
-            name = 'Development TOol',  # Just for logging and feedback
-            widget_module_name = 'devtool',  # path within the python widgets directory, currently widget/widgets
-            config = config  # widgets often need to access configuration
-        ))
-
-        add_widget('config', PythonWidget(
-            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
-            name = 'Config Viewer',  # Just for logging and feedback
-            widget_module_name = 'config',  # path within the python widgets directory, currently widget/widgets
-            config = config  # widgets often need to access configuration
-        ))
-
-        add_widget('demos', PythonWidget(
-            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
-            name = 'Demos',  # Just for logging and feedback
-            widget_module_name = 'demos',  # path within the python widgets directory, currently widget/widgets
-            config = config  # widgets often need to access configuration
-        ))      
         #
         # END DS-SERVICE-WIDGET-ADD-WIDGETS
         #END_CONSTRUCTOR
@@ -141,7 +101,5 @@ class eapearsonWidgetDemo3:
                      'version': self.VERSION,
                      'git_url': self.GIT_URL,
                      'git_commit_hash': self.GIT_COMMIT_HASH}
-        #END_STATUS
-        return [returnVal]
         #END_STATUS
         return [returnVal]

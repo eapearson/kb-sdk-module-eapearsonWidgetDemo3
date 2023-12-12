@@ -144,11 +144,37 @@ const {ref, token, workspaceURL, uiOrigin} = (() => {
         })();
 
         // TODO: check the token... or just use it, and if it fails, deal with it.
-       
-        const env = url.searchParams.get('env') || 'ci';
-        const uiOrigin =  `https://${env}.kbase.us`;
 
-        const workspaceURL = `https://${env}.kbase.us/services/ws`;
+        // Construct a ui origin based on some assumptions.
+        // If the origin is ends with kbase.us, use it.
+        // Otherwise, assume local development and use ci.
+        const uiOrigin = (() => {
+            if (window.location.hostname.endsWith('kbase.us')) {
+                return window.location.origin;
+            } else {
+                return 'https://ci.kbase.us';
+            }
+        })();
+
+        // Construct a kbase endpoint base url based on the same assumptions as above,
+        // except that we use kbase.us for prod.
+        const kbaseEndpoint = (() => {
+            if (window.location.hostname.endsWith('kbase.us')) {
+                if (window.location.hostname.startsWith('narrative.')) {
+                    return `${window.location.origin}/services/`;
+                } else {
+                    return 'https://kbase.us/services/';
+                }
+            } else {
+                return 'https://ci.kbase.us/services/';
+            }
+        })();
+
+       
+        // const env = url.searchParams.get('env') || 'ci';
+        // const uiOrigin =  `https://${env}.kbase.us`;
+
+        const workspaceURL = `${kbaseEndpoint}ws`;
 
         return {ref, token, workspaceURL, uiOrigin};
     }
@@ -157,13 +183,13 @@ const {ref, token, workspaceURL, uiOrigin} = (() => {
 async function main(props) {
     try {
         await render(props)
-        $('#loading').hide();
-        $('#widget').show();
+        $('#loading').remove();
+        $('#widget').removeClass("d-none");
     } catch(ex) {
         console.error('ERROR', ex);
-        $('#loading').hide();
+        $('#loading').remove();
         $('#error-message').text(ex.message);
-        $('#error').show();
+        $('#error').removeClass("d-none");
     }
 }
 

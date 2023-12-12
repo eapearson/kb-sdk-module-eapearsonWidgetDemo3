@@ -49,5 +49,6 @@ class Widget(WidgetBase):
             'token': self.token, 
             'object_info': object_info, 
             'workspace_info': workspace_info, 
-            'media_object': media_object
+            'media_object': media_object,
+            'ui_origin': self.widget_config.get('ui_origin')
         }

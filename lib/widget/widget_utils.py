@@ -88,7 +88,7 @@ class WidgetBase:
     """
     Base behavior for Python Widgets
     """
-    def __init__(self, service_module_name, widget_module_name, token, params, rest_path, config):
+    def __init__(self, service_module_name, widget_module_name, token, params, rest_path, config, widget_config):
         # The module name for the service (directory name, first component of service
         # package path)
         self.service_module_name = service_module_name
@@ -103,6 +103,8 @@ class WidgetBase:
 
         # Service config (from deploy.cfg)
         self.config = config
+
+        self.widget_config = widget_config
 
         # KBase auth token, as provided by the router
         self.token = token

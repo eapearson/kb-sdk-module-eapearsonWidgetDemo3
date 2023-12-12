@@ -6,18 +6,17 @@ import os
 import random as _random
 import sys
 import traceback
-from getopt import getopt, GetoptError
+from getopt import GetoptError, getopt
 from multiprocessing import Process
 from os import environ
 from wsgiref.simple_server import make_server
 
 import requests as _requests
-from jsonrpcbase import JSONRPCService, InvalidParamsError, KeywordError, \
-    JSONRPCError, InvalidRequestError
-from jsonrpcbase import ServerError as JSONServerError
-
 from biokbase import log
 from eapearsonWidgetDemo3.authclient import KBaseAuth as _KBaseAuth
+from jsonrpcbase import (InvalidParamsError, InvalidRequestError, JSONRPCError,
+                         JSONRPCService, KeywordError)
+from jsonrpcbase import ServerError as JSONServerError
 
 try:
     from ConfigParser import ConfigParser
@@ -27,7 +26,8 @@ except ImportError:
 # BEGIN DS-SERVICE-WIDGET-IMPORT
 # Injected by the Dynamic Service Widget Tool
 #
-from widget.widget_handler import widget_handler
+from widget.widget_handler import get_global_widget_support
+
 #
 # END DS-SERVICE-WIDGET-IMPORT
 
@@ -58,7 +58,9 @@ def get_config():
 
 config = get_config()
 
-from eapearsonWidgetDemo3.eapearsonWidgetDemo3Impl import eapearsonWidgetDemo3  # noqa @IgnorePep8
+from eapearsonWidgetDemo3.eapearsonWidgetDemo3Impl import \
+    eapearsonWidgetDemo3  # noqa @IgnorePep8
+
 impl_eapearsonWidgetDemo3 = eapearsonWidgetDemo3(config)
 
 
@@ -362,9 +364,13 @@ class Application(object):
         #
         path = environ['PATH_INFO']
         if path.startswith('/widgets'):
-            status, response_headers, content = widget_handler('${service_module_name}', environ, config)
-            start_response(status, response_headers)
-            return [content]
+            widget_support = get_global_widget_support()
+            if widget_support is not None:
+                status, response_headers, content = widget_support.handle_widget(environ)
+                start_response(status, response_headers)
+                return [content]
+            else:
+                raise Exception('Widget support not yet available for /widgets!')
         #
         # END DS-SERVICE-WIDGET-PATH-HANDLER
         # Context object, equivalent to the perl impl CallContext
@@ -643,6 +649,19 @@ if __name__ == "__main__":
             print("Host set to %s" % host)
         else:
             assert False, "unhandled option"
+
+    start_server(host=host, port=port)
+#    print("Listening on port %s" % port)
+#    httpd = make_server( host, port, application)
+#
+#    httpd.serve_forever()
+
+    start_server(host=host, port=port)
+#    print("Listening on port %s" % port)
+#    httpd = make_server( host, port, application)
+#
+#    httpd.serve_forever()
+#    httpd.serve_forever()
 
     start_server(host=host, port=port)
 #    print("Listening on port %s" % port)

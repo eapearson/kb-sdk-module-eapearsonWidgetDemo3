@@ -42,11 +42,13 @@
                             </tr>
                             <tr>
                                 <th>Object Type</th>
-                                <td><a href="/#spec/type/{{ object_info.type_id }}" target="_blank">{{ object_info.type_id}}</a></td>
+                                <td><a href="{{ ui_origin }}#spec/type/{{
+                                object_info.type_id }}" target="_blank">{{
+                                object_info.type_id}}</a> ({{ ui_origin }})</td>
                             </tr>
                             <tr>
                                 <th>Owner</th>
-                                <td><a href="/#people/{{ workspace_info.owner }}" target="_blank">{{ workspace_info.owner }}</a></td>
+                                <td><a href="{{ ui_origin }}#people/{{ workspace_info.owner }}" target="_blank">{{ workspace_info.owner }}</a></td>
                             </tr>
                             <tr>
                                 <th>Version</th>

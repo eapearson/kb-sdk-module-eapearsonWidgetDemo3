@@ -27,7 +27,7 @@ except ImportError:
 # BEGIN DS-SERVICE-WIDGET-IMPORT
 # Injected by the Dynamic Service Widget Tool
 #
-from widget.widget_handler import widget_handler
+from widget.widget_handler import get_global_widget_support
 
 #
 # END DS-SERVICE-WIDGET-IMPORT
@@ -365,9 +365,13 @@ class Application(object):
         #
         path = environ['PATH_INFO']
         if path.startswith('/widgets'):
-            status, response_headers, content = widget_handler('${service_module_name}', environ, config)
-            start_response(status, response_headers)
-            return [content]
+            widget_support = get_global_widget_support()
+            if widget_support is not None:
+                status, response_headers, content = widget_support.handle_widget('${service_module_name}', environ, config)
+                start_response(status, response_headers)
+                return [content]
+            else:
+                raise Exception('Widget support not yet available for /widgets!')
         #
         # END DS-SERVICE-WIDGET-PATH-HANDLER
 
