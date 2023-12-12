@@ -6,29 +6,28 @@ import os
 import random as _random
 import sys
 import traceback
-from getopt import GetoptError, getopt
+from getopt import getopt, GetoptError
 from multiprocessing import Process
 from os import environ
 from wsgiref.simple_server import make_server
 
 import requests as _requests
-from biokbase import log
-from installed_clients.authclient import KBaseAuth as _KBaseAuth
-from jsonrpcbase import (InvalidParamsError, InvalidRequestError, JSONRPCError,
-                         JSONRPCService, KeywordError)
+from jsonrpcbase import JSONRPCService, InvalidParamsError, KeywordError, \
+    JSONRPCError, InvalidRequestError
 from jsonrpcbase import ServerError as JSONServerError
+
+from biokbase import log
+from eapearsonWidgetDemo3.authclient import KBaseAuth as _KBaseAuth
 
 try:
     from ConfigParser import ConfigParser
 except ImportError:
     from configparser import ConfigParser
 
-
 # BEGIN DS-SERVICE-WIDGET-IMPORT
 # Injected by the Dynamic Service Widget Tool
 #
 from widget.widget_handler import widget_handler
-
 #
 # END DS-SERVICE-WIDGET-IMPORT
 
@@ -59,9 +58,7 @@ def get_config():
 
 config = get_config()
 
-from eapearsonWidgetDemo3.eapearsonWidgetDemo3Impl import \
-    eapearsonWidgetDemo3  # noqa @IgnorePep8
-
+from eapearsonWidgetDemo3.eapearsonWidgetDemo3Impl import eapearsonWidgetDemo3  # noqa @IgnorePep8
 impl_eapearsonWidgetDemo3 = eapearsonWidgetDemo3(config)
 
 
@@ -370,28 +367,8 @@ class Application(object):
             return [content]
         #
         # END DS-SERVICE-WIDGET-PATH-HANDLER
-
         # Context object, equivalent to the perl impl CallContext
         ctx = MethodContext(self.userlog)
-        whitelist_keys = [
-            "REQUEST_METHOD",
-            "REQUEST_URI",
-            "PATH_INFO",
-            "QUERY_STRING",
-            "SERVER_PROTOCOL",
-            "SCRIPT_NAME",
-            "SERVER_NAME",
-            "SERVER_PORT",
-            "UWSGI_ROUTER",
-            "REMOTE_ADDR",
-            "REMOTE_PORT",
-            "HTTP_HOST",
-            "CONTENT_LENGTH",
-            "HTTP_PRAGMA",
-            "HTTP_CACHE_CONTROL"
-        ]
-        ctx['environ'] = [(key, value) for (key, value) in environ.items() if key in whitelist_keys]
-        ctx['environ_omitted'] = [key for key in environ.keys() if key not in whitelist_keys]
         ctx['client_ip'] = getIPAddress(environ)
         status = '500 Internal Server Error'
 
@@ -667,11 +644,6 @@ if __name__ == "__main__":
         else:
             assert False, "unhandled option"
 
-    start_server(host=host, port=port)
-#    print("Listening on port %s" % port)
-#    httpd = make_server( host, port, application)
-#
-#    httpd.serve_forever()
     start_server(host=host, port=port)
 #    print("Listening on port %s" % port)
 #    httpd = make_server( host, port, application)

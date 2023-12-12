@@ -34,7 +34,7 @@ class eapearsonWidgetDemo3:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "git@github.com:eapearson/kb-sdk-module-eapearsonWidgetDemo3.git"
-    GIT_COMMIT_HASH = "11db203231e182ad9520723fc65eb870a9d014cf"
+    GIT_COMMIT_HASH = "ceeaec10cb6453e461d18676dc17941a6999ca84"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
