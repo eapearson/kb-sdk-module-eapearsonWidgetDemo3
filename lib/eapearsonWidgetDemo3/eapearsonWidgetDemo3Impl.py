@@ -135,6 +135,8 @@ class eapearsonWidgetDemo3:
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",
+                     'environ': ctx.get('environ'),
+                     'environ_omitted': ctx.get('environ_omitted'),
                      'message': "",
                      'version': self.VERSION,
                      'git_url': self.GIT_URL,
