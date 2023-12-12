@@ -4,6 +4,15 @@ import logging
 import os
 
 from installed_clients.KBaseReportClient import KBaseReport
+# BEGIN DS-SERVICE-WIDGET-IMPORT
+# Injected by the Dynamic Service Widget Tool
+#
+from widget.handlers.assets import Assets
+from widget.handlers.python_widget import PythonWidget
+from widget.handlers.static_widget import StaticWidget
+from widget.widget_handler import add_widget
+#
+# END DS-SERVICE-WIDGET-IMPORT
 #END_HEADER
 
 
@@ -37,6 +46,61 @@ class eapearsonWidgetDemo3:
         self.shared_folder = config['scratch']
         logging.basicConfig(format='%(created)s %(levelname)s: %(message)s',
                             level=logging.INFO)
+        # BEGIN DS-SERVICE-WIDGET-ADD-WIDGETS
+        # Injected by the Dynamic Service Widget Tool
+        #
+        module_name = __name__.split('.')[:1][0]
+
+        add_widget('assets', Assets(
+            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
+            name = 'Assets',  # Just for logging and feedback
+            path = 'assets',  # path within the widgets directory, currently widget/widgets
+            config = config  # widgets often need to access configuration
+        ))
+        
+        add_widget('first', StaticWidget(
+            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
+            name = 'First',  # Just for logging and feedback
+            path = 'first',  # path within the widgets directory, currently widget/widgets
+            config = config  # widgets often need to access configuration
+        ))
+
+        add_widget('media_viewer', StaticWidget(
+            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
+            name = 'Media Viewer (Javascript version)',  # Just for logging and feedback
+            path = 'media_viewer',  # path within the widgets directory, currently widget/widgets
+            config = config  # widgets often need to access configuration
+        ))
+
+        add_widget('media_viewer_py', PythonWidget(
+            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
+            name = 'Media Viewer (Python version)',  # Just for logging and feedback
+            widget_module_name = 'media_viewer',  # path within the python widgets directory, currently widget/widgets
+            config = config  # widgets often need to access configuration
+        ))
+
+        add_widget('devtool', PythonWidget(
+            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
+            name = 'Development TOol',  # Just for logging and feedback
+            widget_module_name = 'devtool',  # path within the python widgets directory, currently widget/widgets
+            config = config  # widgets often need to access configuration
+        ))
+
+        add_widget('config', PythonWidget(
+            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
+            name = 'Config Viewer',  # Just for logging and feedback
+            widget_module_name = 'config',  # path within the python widgets directory, currently widget/widgets
+            config = config  # widgets often need to access configuration
+        ))
+
+        add_widget('demos', PythonWidget(
+            service_module_name = module_name,  # TODO: maybe can just get this inside the class?
+            name = 'Demos',  # Just for logging and feedback
+            widget_module_name = 'demos',  # path within the python widgets directory, currently widget/widgets
+            config = config  # widgets often need to access configuration
+        ))      
+        #
+        # END DS-SERVICE-WIDGET-ADD-WIDGETS
         #END_CONSTRUCTOR
         pass
 
