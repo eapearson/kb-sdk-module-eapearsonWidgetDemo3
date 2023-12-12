@@ -374,6 +374,7 @@ class Application(object):
         # Context object, equivalent to the perl impl CallContext
         ctx = MethodContext(self.userlog)
         whitelist_keys = [
+            # Exposed locally
             "REQUEST_METHOD",
             "REQUEST_URI",
             "PATH_INFO",
@@ -388,7 +389,31 @@ class Application(object):
             "HTTP_HOST",
             "CONTENT_LENGTH",
             "HTTP_PRAGMA",
-            "HTTP_CACHE_CONTROL"
+            "HTTP_CACHE_CONTROL",
+            # Only on server (proxied, etc.)
+            "HTTP_X_FORWARDED_FOR",
+            "HTTP_X_REAL_IP",
+            "HTTP_X_FORWARDED_PROTO",
+            "HTTP_CONNECTION",
+            "HTTP_ACCEPT_ENCODING",
+            "HTTP_CF_RAY",
+            "HTTP_CF_VISITOR",
+            "HTTP_CF_CONNECTING_IP",
+            "HTTP_CDN_LOOP",
+            "HTTP_CF_IPCOUNTRY",
+            # wsgi (just usable ones enabled)
+            # "wsgi.input",
+            # "wsgi.file_wrapper",
+            "wsgi.version",
+            "wsgi.errors",
+            "wsgi.run_once",
+            "wsgi.multithread",
+            "wsgi.multiprocess",
+            "wsgi.url_scheme",
+            "uwsgi.version",
+            # "uwsgi.core",
+            # "uwsgi.node"
+
         ]
         ctx['environ'] = [(key, value) for (key, value) in environ.items() if key in whitelist_keys]
         ctx['environ_omitted'] = [key for key in environ.keys() if key not in whitelist_keys]
