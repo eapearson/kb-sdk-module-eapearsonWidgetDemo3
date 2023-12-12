@@ -33,8 +33,8 @@ class eapearsonWidgetDemo3:
     # the latter method is running.
     ######################################### noqa
     VERSION = "0.0.1"
-    GIT_URL = ""
-    GIT_COMMIT_HASH = "b828080bc7cead973e83ce03d394e661963672e9"
+    GIT_URL = "git@github.com:eapearson/kb-sdk-module-eapearsonWidgetDemo3.git"
+    GIT_COMMIT_HASH = "11db203231e182ad9520723fc65eb870a9d014cf"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
