@@ -11,6 +11,7 @@ from widget.handlers.assets import Assets
 from widget.handlers.python_widget import PythonWidget
 from widget.handlers.static_widget import StaticWidget
 from widget.widget_handler import add_widget
+
 #
 # END DS-SERVICE-WIDGET-IMPORT
 #END_HEADER
@@ -42,7 +43,7 @@ class eapearsonWidgetDemo3:
     # be found
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
-        self.callback_url = os.environ['SDK_CALLBACK_URL']
+        self.callback_url = os.environ.get('SDK_CALLBACK_URL')
         self.shared_folder = config['scratch']
         logging.basicConfig(format='%(created)s %(levelname)s: %(message)s',
                             level=logging.INFO)
@@ -138,5 +139,7 @@ class eapearsonWidgetDemo3:
                      'version': self.VERSION,
                      'git_url': self.GIT_URL,
                      'git_commit_hash': self.GIT_COMMIT_HASH}
+        #END_STATUS
+        return [returnVal]
         #END_STATUS
         return [returnVal]
