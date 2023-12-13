@@ -47,7 +47,8 @@ class eapearsonWidgetDemo3:
         # BEGIN DS-SERVICE-WIDGET-ADD-WIDGETS
         # Injected by the Dynamic Service Widget Tool
         #
-        widget_support = WidgetSupport(config, self.GIT_COMMIT_HASH)
+        service_module_name = __name__.split('.')[:1][0]
+        widget_support = WidgetSupport(config, service_module_name, self.GIT_COMMIT_HASH)
         set_global_widget_support(widget_support)
 
 

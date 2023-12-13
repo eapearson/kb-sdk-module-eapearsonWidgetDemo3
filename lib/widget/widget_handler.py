@@ -17,14 +17,12 @@ GLOBAL_WIDGET_SUPPORT = None
 
 class WidgetSupport(object):
     WIDGETS = {}
-    def __init__(self, config, git_commit_hash):
+    def __init__(self, config, service_module_name, git_commit_hash):
         self.config = config
         self.git_commit_hash = git_commit_hash
 
-        module_name = __name__.split('.')[:1][0]
-
         # TODO: remove that parameter, as it is now in the config
-        self.service_module_name = module_name
+        self.service_module_name = service_module_name
 
         runtime_mode_env_var = os.environ.get('RUNTIME_MODE') or ''
         self.runtime_mode = "DEVELOPMENT" if runtime_mode_env_var.lower().startswith('dev') else "PRODUCTION"
@@ -34,7 +32,7 @@ class WidgetSupport(object):
         if self.runtime_mode == "DEVELOPMENT":
             self.base_path = ""
         else:
-            self.base_path = f"/dynserv/{git_commit_hash}.{module_name}"
+            self.base_path = f"/dynserv/{git_commit_hash}.{service_module_name}"
             
         print("BASE PATH", self.base_path)
 
